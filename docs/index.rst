@@ -11,9 +11,9 @@ Contents:
 .. toctree::
    :maxdepth: 2
 
+   List of exception used by this module <exception> 
+
 .. automodule:: gdshortener
-.. autoclass:: GDException
-   :members:
 
 Indices and tables
 ==================

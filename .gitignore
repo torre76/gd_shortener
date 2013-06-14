@@ -4,3 +4,4 @@
 .Python
 .project
 .pydevproject
+*.pyc
