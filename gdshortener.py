@@ -4,6 +4,7 @@
     :synopsis: Module that enables the use of `is.gd - v.gd url shortener <http://is.gd/developers.php>`_.
 """
 
+import HTMLParser
 import urllib
 import urllib2
 import json
@@ -155,6 +156,53 @@ class GDBaseShortener(object):
         :type timeout: int.              
     ''' 
     
+    def lookup(self, short_url):
+        '''
+            Lookup an URL shorten with `is.gd - v.gd url shortener service <http://is.gd/developers.php>`_ and returns the real url
+            
+            :param short_url: the url shortened with .gd service
+            :type short_url: str.
+            
+            :returns: str. -- The original url that was shortened with .gd service
+            
+            :raises: **IOError** when timeout with .gd service occurs
+            
+                **ValueError** if .gd response is malformed
+                
+                :class:`gdshortener.GDMalformedURLError` if the previously shortened URL provided is malformed
+                
+                :class:`gdshortener.GDShortURLError` if the custom URL requested is not available or disabled by .gd service
+                
+                :class:`gdshortener.GDRateLimitError` if the request rate is exceeded for .gd service
+                
+                :class:`gdshortener.GDGenericError` in case of generic error from .gd service (mainteinance)            
+        '''
+        if short_url is None or not isinstance(short_url, basestring) or len(short_url.strip()) == 0:
+            raise GDMalformedURLError('The shortened URL must be a non empty string')
+        # Build data for porst
+        data = {
+                'format':       'json',
+                'shorturl':      short_url
+                }
+        f_desc = urllib2.urlopen("{0}/forward.php".format(self.shortener_url), urllib.urlencode(data), self._timeout)
+        response = json.loads(f_desc.read())
+        if 'url' in response:
+            # Success!
+            return HTMLParser.HTMLParser().unescape(urllib.unquote(response['url']))
+        else:
+            # Error
+            error_code = int(response['errorcode'])
+            error_description = str(response['errormessage'])
+            if error_code == 1:
+                raise GDMalformedURLError(error_description)
+            if error_code == 2:
+                raise GDShortURLError(error_description)
+            if error_code == 3:
+                raise GDRateLimitError(error_description)
+            if error_code == 4:
+                raise GDGenericError(error_description)
+        
+    
     def shorten(self, url, custom_url = None, log_stat = False):
         '''
             Shorten an URL using `is.gd - v.gd url shortener service <http://is.gd/developers.php>`_.
@@ -181,7 +229,7 @@ class GDBaseShortener(object):
                 
                 :class:`gdshortener.GDMalformedURLError` if the URL provided for shortening is malformed
                 
-                :class:`gdshortener.GDShortURLError` if the custom URL requested is not avilable
+                :class:`gdshortener.GDShortURLError` if the custom URL requested is not available
                 
                 :class:`gdshortener.GDRateLimitError` if the request rate is exceeded for .gd service
                 
