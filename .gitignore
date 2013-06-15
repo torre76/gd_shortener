@@ -6,3 +6,6 @@
 .pydevproject
 *.pyc
 .pypirc
+/build
+/dist
+/gdshortener.egg-info

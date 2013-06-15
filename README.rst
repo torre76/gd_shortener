@@ -1,25 +1,32 @@
-# GD Shortener
+GD Shortener
+=============
 
-Python Module for [is.gd - v.gd](http://is.gd/apishorteningreference.php "is.gd - v.gd - Developer site")  URL Shortener.
+Python Module for `is.gd - v.gd <http://is.gd/apishorteningreference.php>`_ URL Shortener.
 
-## What is this?
+What is this?
+-------------
 
-*GD Shortener* allow Python software to access [is.gd - v.gd](http://is.gd/apishorteningreference.php "is.gd - v.gd - Developer site") URL shortener service.
+*GD Shortener* allow Python software to access `is.gd - v.gd <http://is.gd/apishorteningreference.php>`_ URL shortener service.
 
 Using this module you could shorten an URL to a small one like *Twitter* does for its link.
 
-This service is provided by [is.gd - v.gd](http://is.gd/apishorteningreference.php "is.gd - v.gd - Developer site") and, thru the classes in this module, you could view stats on shortened URLs and obtain reverse lookup on URLs. 
+This service is provided by `is.gd - v.gd <http://is.gd/apishorteningreference.php>`_ and, thru the classes in this module, you could view stats on shortened URLs and obtain reverse lookup on URLs. 
 
-## Install
+Install
+-------
 
-To install *GD Shortener*, run the following command:
+To install *GD Shortener*, run the following command::
 
-	pip install gdshortener
+    pip install gdshortener
 	
-## Usage
+Usage
+-----
+
 
 After install, to use *GD Shortener* is sufficient to import the package, choose the implementing class `ISGDShortener` or `VGDShortener` (it maps to is.gd or v.gd) and use the following code:
 
+.. code-block:: python 
+	 
 	import gdshortener
 	
 	s = gdshortener.ISGDShortener()
@@ -27,16 +34,23 @@ After install, to use *GD Shortener* is sufficient to import the package, choose
 	
 If you want statistic usage on a URL use:
 
+.. code-block:: python
+	
 	print s.shorten(url = 'http://www.google.com', log_stat = True)
 	
 If you want a custom URL use:
 
+.. code-block:: python
+	
 	print s.shorten(url = 'http://www.google.com', custom_url = 'Pippus')
 	
 If you have an already shortened URL and want a reverse looup:
 
+.. code-block:: python
+	
 	print s.lookup('http://is.gd/Pippus')
 	
-## License
+License
+-------
 
 *GD Shortener* is licensed under LGPL. See LICENSE.txt for details.

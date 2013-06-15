@@ -1,15 +1,10 @@
-import os
+import codecs
 from setuptools import setup
 
-# Utility function to read the README file.
-# Used for the long_description.  It's nice, because now 1) we have a top level
-# README file and 2) it's easier to type in the README.md file than to put a raw
-# string in below ...
-def read(fname):
-    return open(os.path.join(os.path.dirname(__file__), fname)).read()
+long_description = codecs.open('README.rst', "r").read()
 
 setup(
-    name = "GD Shortener",
+    name = "gdshortener",
     version = "0.0.1",
     author = "Gian Luca Dalla Torre",
     author_email = "gianluca@gestionaleauto.com",
@@ -17,12 +12,14 @@ setup(
     license = "LGPL",
     keywords = "url shortener gd",
     url = "https://github.com/torre76/gd_shortener",
-    packages=['tests'],
     scripts=['gdshortener.py'],
-    long_description=read('README.md'),
+    long_description=long_description,
     classifiers=[
         "Development Status :: 3 - Alpha",
         "Topic :: Software Development :: Libraries :: Python Modules",
         "License :: OSI Approved :: GNU Library or Lesser General Public License (LGPL)",
+        "Programming Language :: Python :: 2.6",
+        "Programming Language :: Python :: 2.7",
+        "Programming Language :: Python :: 2 :: Only"
     ],
 )
