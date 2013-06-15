@@ -11,6 +11,7 @@ Contents:
 .. toctree::
    :maxdepth: 2
 
+   List of classes provided by this module <class> 
    List of exception used by this module <exception> 
 
 .. automodule:: gdshortener
