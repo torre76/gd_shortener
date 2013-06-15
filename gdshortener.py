@@ -282,3 +282,37 @@ class GDBaseShortener(object):
         '''
         self.shortener_url = shortener_url
         self._timeout = timeout
+        
+class ISGDShortener(GDBaseShortener):
+    '''
+        Shortener for `is.gd url shortener <http://is.gd/developers.php>`_.
+
+        :param timeout: Timeout in seconds used to connect and obtain shortened URL from .gd service
+        :type timeout: int.              
+    ''' 
+    
+
+    def __init__(self, timeout = 60):
+        '''
+            Init URL Shortener class
+            
+            :param timeout: Timeout in seconds used to connect and obtain shortened URL from .gd service
+            :type timeout: int.
+        '''
+        GDBaseShortener.__init__(self, _IS_GD_SHORTENER_URL_, timeout)
+
+class VGDShortener(GDBaseShortener):
+    '''
+        Shortener for `v.gd url shortener <http://is.gd/developers.php>`_.
+
+        :param timeout: Timeout in seconds used to connect and obtain shortened URL from .gd service
+        :type timeout: int.              
+    ''' 
+    def __init__(self, timeout = 60):
+        '''
+            Init URL Shortener class
+            
+            :param timeout: Timeout in seconds used to connect and obtain shortened URL from .gd service
+            :type timeout: int.
+        '''
+        GDBaseShortener.__init__(self, _V_GD_SHORTENER_URL_, timeout)
