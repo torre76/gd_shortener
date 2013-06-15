@@ -87,7 +87,7 @@ class GDShortURLError(GDBaseException):
     '''
         This exceptions identify a problem with the shortened URL.
         
-        Could be either an error on custom shortener URL or a copyright error on a URL (in which case it could had been disabled)
+        Could be either an error on custom shortener URL or a copyright error on a URL (in which case it could had been disabled).
         
         :param error_description: Error description obtained from is.gd
         :type error_description: str.        
@@ -158,7 +158,7 @@ class GDBaseShortener(object):
     
     def lookup(self, short_url):
         '''
-            Lookup an URL shorten with `is.gd - v.gd url shortener service <http://is.gd/developers.php>`_ and returns the real url
+            Lookup an URL shortened with `is.gd - v.gd url service <http://is.gd/developers.php>`_ and return the real url
             
             :param short_url: the url shortened with .gd service
             :type short_url: str.
@@ -216,7 +216,7 @@ class GDBaseShortener(object):
             
             :type custom_url: str.
             :param log_stat: States if the generated url has statistical analisys attached.
-                If the stats are enabled, a special url (the generated url plus an _ sign) will show the stats on this url.
+                If the stats are enabled, a special url will show the stats on this shortened url. This special url is returned as second parameters of this function.
                 
                 Please notice that a stat enabled shorten url counts double in .gd rate exceeding monitor system.
                 

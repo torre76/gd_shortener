@@ -1,12 +1,13 @@
 GD Shortener's Exceptions
 ========================================
 
-Contents:
-
-.. autoclass:: gdshortener.GDBaseException
-   :members: error_code, error_description
+List of exceptions that this module handles:
 
 .. autoclass:: gdshortener.GDMalformedURLError
+   :members: error_code, error_description
 .. autoclass:: gdshortener.GDShortURLError
+   :members: error_code, error_description
 .. autoclass:: gdshortener.GDRateLimitError
+   :members: error_code, error_description
 .. autoclass:: gdshortener.GDGenericError
+   :members: error_code, error_description

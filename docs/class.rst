@@ -1,7 +1,8 @@
 GD Shortener's classes
 ========================================
 
-Contents:
+Here you will found documentation on operations implemented by this module.
+
 
 .. autoclass:: gdshortener.ISGDShortener
 	:members: shorten, lookup
