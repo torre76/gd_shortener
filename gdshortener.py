@@ -8,8 +8,8 @@ import urllib
 import urllib2
 import json
 
-_V_GD_SHORTENER_URL_ = 'http://v.gd/create.php'
-_IS_GD_SHORTENER_URL_ = 'http://is.gd/create.php'
+_V_GD_SHORTENER_URL_ = 'http://v.gd'
+_IS_GD_SHORTENER_URL_ = 'http://is.gd'
 
 class GDBaseException(Exception):
     '''
@@ -198,11 +198,11 @@ class GDBaseShortener(object):
                 }
         if custom_url is not None and isinstance(custom_url, basestring) and len(custom_url.strip()) > 0:
             data['shorturl'] = custom_url
-        f_desc = urllib2.urlopen(self.shortener_url, urllib.urlencode(data), self._timeout)
+        f_desc = urllib2.urlopen("{0}/create.php".format(self.shortener_url), urllib.urlencode(data), self._timeout)
         response = json.loads(f_desc.read())
         if 'shorturl' in response:
             # Success!
-            return (str(response['shorturl']), None if not log_stat else 'http://is.gd/stats.php?url={0}'.format(str(response['shorturl'])[str(response['shorturl']).rindex('/') + 1:]))
+            return (str(response['shorturl']), None if not log_stat else '{0}/stats.php?url={1}'.format(self.shortener_url, str(response['shorturl'])[str(response['shorturl']).rindex('/') + 1:]))
         else:
             # Error
             error_code = int(response['errorcode'])
