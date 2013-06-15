@@ -13,7 +13,7 @@ setup(
     keywords = "url shortener gd",
     url = "https://github.com/torre76/gd_shortener",
     download_url = "https://github.com/torre76/gd_shortener/tarball/0.0.1",
-    packages=['gdshortener.py'],
+    packages=['gdshortener'],
     long_description=long_description,
     package_data = {
         '': ['README.rst'],
