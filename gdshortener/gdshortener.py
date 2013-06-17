@@ -153,7 +153,9 @@ class GDBaseShortener(object):
             
 
         :param timeout: Timeout in seconds used to connect and obtain shortened URL from .gd service
-        :type timeout: int.              
+        :type timeout: int.
+        :param user_agent: User Agent used when querying .gd services
+        :type user_agent: str.                      
     ''' 
     
     def lookup(self, short_url):
@@ -184,7 +186,10 @@ class GDBaseShortener(object):
                 'format':       'json',
                 'shorturl':      short_url
                 }
-        f_desc = urllib2.urlopen("{0}/forward.php".format(self.shortener_url), urllib.urlencode(data), self._timeout)
+        opener = urllib2.build_opener()
+        headers = { 'User-Agent' : self._user_agent }
+        req = urllib2.Request("{0}/forward.php".format(self.shortener_url), urllib.urlencode(data), headers)
+        f_desc = opener.open(req, timeout = self._timeout)
         response = json.loads(f_desc.read())
         if 'url' in response:
             # Success!
@@ -246,7 +251,10 @@ class GDBaseShortener(object):
                 }
         if custom_url is not None and isinstance(custom_url, basestring) and len(custom_url.strip()) > 0:
             data['shorturl'] = custom_url
-        f_desc = urllib2.urlopen("{0}/create.php".format(self.shortener_url), urllib.urlencode(data), self._timeout)
+        opener = urllib2.build_opener()
+        headers = { 'User-Agent' : self._user_agent }
+        req = urllib2.Request("{0}/create.php".format(self.shortener_url), urllib.urlencode(data), headers)
+        f_desc = opener.open(req, timeout = self._timeout)
         response = json.loads(f_desc.read())
         if 'shorturl' in response:
             # Success!
@@ -264,7 +272,7 @@ class GDBaseShortener(object):
             if error_code == 4:
                 raise GDGenericError(error_description)
     
-    def __init__(self, shortener_url = _IS_GD_SHORTENER_URL_, timeout = 60):
+    def __init__(self, shortener_url = _IS_GD_SHORTENER_URL_, timeout = 60, user_agent = 'Mozilla/5.0 (compatible; GD Shortener Python Module - https://github.com/torre76/gd_shortener/)'):
         '''
             Init URL Shortener class
             
@@ -279,40 +287,53 @@ class GDBaseShortener(object):
 
             :param timeout: Timeout in seconds used to connect and obtain shortened URL from .gd service
             :type timeout: int.
+            :param user_agent: User Agent used when querying .gd services
+            :type user_agent: str.
         '''
         self.shortener_url = shortener_url
         self._timeout = timeout
+        self._user_agent = user_agent
         
 class ISGDShortener(GDBaseShortener):
     '''
         Shortener for `is.gd url shortener <http://is.gd/developers.php>`_.
 
         :param timeout: Timeout in seconds used to connect and obtain shortened URL from .gd service
-        :type timeout: int.              
+        :type timeout: int.  
+        :param user_agent: User Agent used when querying .gd services
+        :type user_agent: str.                    
     ''' 
     
 
-    def __init__(self, timeout = 60):
+    def __init__(self, timeout = 60, user_agent = 'Mozilla/5.0 (compatible; GD Shortener Python Module - https://github.com/torre76/gd_shortener/)'):
         '''
             Init URL Shortener class
             
             :param timeout: Timeout in seconds used to connect and obtain shortened URL from .gd service
             :type timeout: int.
+            :param user_agent: User Agent used when querying .gd services
+            :type user_agent: str.
+            
         '''
-        GDBaseShortener.__init__(self, _IS_GD_SHORTENER_URL_, timeout)
+        GDBaseShortener.__init__(self, _IS_GD_SHORTENER_URL_, timeout, user_agent)
 
 class VGDShortener(GDBaseShortener):
     '''
         Shortener for `v.gd url shortener <http://is.gd/developers.php>`_.
 
         :param timeout: Timeout in seconds used to connect and obtain shortened URL from .gd service
-        :type timeout: int.              
+        :type timeout: int.       
+        :param user_agent: User Agent used when querying .gd services
+        :type user_agent: str.    
+                   
     ''' 
-    def __init__(self, timeout = 60):
+    def __init__(self, timeout = 60, user_agent = 'Mozilla/5.0 (compatible; GD Shortener Python Module - https://github.com/torre76/gd_shortener/)'):
         '''
             Init URL Shortener class
             
             :param timeout: Timeout in seconds used to connect and obtain shortened URL from .gd service
             :type timeout: int.
+            :param user_agent: User Agent used when querying .gd services
+            :type user_agent: str.            
         '''
-        GDBaseShortener.__init__(self, _V_GD_SHORTENER_URL_, timeout)
+        GDBaseShortener.__init__(self, _V_GD_SHORTENER_URL_, timeout, user_agent)
