@@ -5,7 +5,7 @@ long_description = codecs.open('README.rst', "r").read()
 
 setup(
     name = "gdshortener",
-    version = "0.0.1",
+    version = "0.0.2",
     author = "Gian Luca Dalla Torre",
     author_email = "gianluca@gestionaleauto.com",
     description = ("A module that provides access to .gd URL Shortener"),
@@ -19,7 +19,7 @@ setup(
         '': ['README.rst'],
     },
     classifiers=[
-        "Development Status :: 3 - Alpha",
+        "Development Status :: 4 - Beta",
         "Topic :: Software Development :: Libraries :: Python Modules",
         "License :: OSI Approved :: GNU Library or Lesser General Public License (LGPL)",
         "Programming Language :: Python :: 2.6",
