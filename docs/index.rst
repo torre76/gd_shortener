@@ -44,7 +44,7 @@ If you want a custom URL use:
 	
 	print s.shorten(url = 'http://www.google.com', custom_url = 'Pippus')
 	
-If you have an already shortened URL and want a reverse looup:
+If you have an already shortened URL and want a reverse lookup:
 
 .. code-block:: python
 	
