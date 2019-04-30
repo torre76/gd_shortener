@@ -5,14 +5,14 @@ long_description = codecs.open('README.rst', "r").read()
 
 setup(
     name="gdshortener",
-    version="0.0.2",
+    version="0.0.3",
     author="Gian Luca Dalla Torre",
     author_email="gianluca@gestionaleauto.com",
     description=("A module that provides access to .gd URL Shortener"),
     license="LGPL",
     keywords="url shortener gd",
     url="https://github.com/torre76/gd_shortener",
-    download_url="https://github.com/torre76/gd_shortener/tarball/0.0.2",
+    download_url="https://github.com/torre76/gd_shortener/tarball/0.0.3",
     packages=['gdshortener'],
     long_description=long_description,
     package_data={
@@ -26,4 +26,7 @@ setup(
         "Programming Language :: Python :: 2.7",
         "Programming Language :: Python :: 2 :: Only"
     ],
+    install_requires=[
+        "requests"
+    ]
 )
