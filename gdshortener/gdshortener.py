@@ -6,7 +6,7 @@
 
 import HTMLParser
 import urllib
-import urllib2
+import requests
 import json
 
 _V_GD_SHORTENER_URL_ = 'http://v.gd'
@@ -183,11 +183,9 @@ class GDBaseShortener(object):
             'format': 'json',
             'shorturl': short_url
         }
-        opener = urllib2.build_opener()
         headers = {'User-Agent': self._user_agent}
-        req = urllib2.Request("{0}/forward.php".format(self.shortener_url), urllib.urlencode(data), headers)
-        f_desc = opener.open(req, timeout=self._timeout)
-        response = json.loads(f_desc.read())
+        f_desc = requests.get("{0}/forward.php".format(self.shortener_url), params=data, headers=headers)
+        response = json.loads(f_desc.text)
         if 'url' in response:
             # Success!
             return HTMLParser.HTMLParser().unescape(urllib.unquote(response['url']))
@@ -241,11 +239,9 @@ class GDBaseShortener(object):
         }
         if custom_url is not None and isinstance(custom_url, basestring) and len(custom_url.strip()) > 0:
             data['shorturl'] = custom_url
-        opener = urllib2.build_opener()
-        headers = {'User-Agent' : self._user_agent}
-        req = urllib2.Request("{0}/create.php".format(self.shortener_url), urllib.urlencode(data), headers)
-        f_desc = opener.open(req, timeout=self._timeout)
-        response = json.loads(f_desc.read())
+        headers = {'User-Agent': self._user_agent}
+        f_desc = requests.get("{0}/create.php".format(self.shortener_url), params=data, headers=headers)
+        response = json.loads(f_desc.text)
         if 'shorturl' in response:
             # Success!
             return (str(response['shorturl']),
