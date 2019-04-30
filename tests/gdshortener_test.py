@@ -4,16 +4,13 @@ import unittest
 
 class GDShortenerTest(unittest.TestCase):
 
-
     def setUp(self):
         self._tested = gdshortener.GDBaseShortener(timeout=30)
         self._tested_is = gdshortener.ISGDShortener(timeout=30)
         self._tested_v = gdshortener.VGDShortener()
 
-
     def tearDown(self):
         pass
-
 
     def testShorten(self):
         shortened_url, stat_url = self._tested.shorten(
@@ -68,7 +65,7 @@ class GDShortenerTest(unittest.TestCase):
         original_url = self._tested_v.lookup(shortened_url)
         self.assertIsNotNone(original_url)
         print "Url obtained: [{0}] - Lookup url: [{1}]".format(shortened_url, original_url)
-        
+
 
 if __name__ == "__main__":
     #import sys;sys.argv = ['', 'Test.testName']
