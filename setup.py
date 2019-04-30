@@ -27,6 +27,6 @@ setup(
         "Programming Language :: Python :: 2 :: Only"
     ],
     install_requires=[
-        "requests"
+        "requests >= 2.21.0"
     ]
 )
