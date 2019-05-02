@@ -9,5 +9,7 @@ List of exceptions that this module handles:
    :members: error_code, error_description
 .. autoclass:: gdshortener.GDRateLimitError
    :members: error_code, error_description
+.. autoclass:: gdshortener.GDSSLError
+   :members: error_code, error_description
 .. autoclass:: gdshortener.GDGenericError
    :members: error_code, error_description

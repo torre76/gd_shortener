@@ -66,7 +66,13 @@ class GDShortenerTest(unittest.TestCase):
         self.assertIsNotNone(original_url)
         print "Url obtained: [{0}] - Lookup url: [{1}]".format(shortened_url, original_url)
 
+    def testBrokenSSLCertificate(self):
+        shortened_url, stat_url = self._tested.shorten(url="https://expired.badssl.com/", verify_ssl=False)
+        self.assertIsNotNone(shortened_url)
+        self.assertIsNone(stat_url)
+        print "Url obtained: [{0}]".format(shortened_url)
+
 
 if __name__ == "__main__":
-    #import sys;sys.argv = ['', 'Test.testName']
+    # import sys;sys.argv = ['', 'Test.testName']
     unittest.main()

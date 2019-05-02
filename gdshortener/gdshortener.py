@@ -125,7 +125,7 @@ class GDGenericError(GDBaseException):
     """
         This exceptions is raised when is.gd states a generic problem.
         
-        Further informations are provided on error description.
+        Further information are provided on error description.
         
         :param error_description: Error description obtained from is.gd
         :type error_description: str.        
@@ -139,6 +139,27 @@ class GDGenericError(GDBaseException):
             :type error_description: str.
         """
         GDBaseException.__init__(self, 4, error_description)
+
+
+class GDSSLError(GDBaseException):
+    """
+        This exceptions is raised when remote url has a broken ssl certificate and
+        current openssl version is too old to understand the error.
+
+        Further information are provided on error description.
+
+        :param error_description: Error description obtained from exception
+        :type error_description: str.
+    """
+
+    def __init__(self, error_description=None):
+        """
+            Init the exception with message taken from raised exception.
+
+            :param error_description: Error description obtained from exception
+            :type error_description: str.
+        """
+        GDBaseException.__init__(self, 5, error_description)
 
 
 class GDBaseShortener(object):
@@ -160,12 +181,14 @@ class GDBaseShortener(object):
         :type user_agent: str.
     """
     
-    def lookup(self, short_url):
+    def lookup(self, short_url, verify_ssl=True):
         """
             Lookup an URL shortened with `is.gd - v.gd url service <http://is.gd/developers.php>`_ and return the real url
             
             :param short_url: the url shortened with .gd service
             :type short_url: str.
+            :param verify_ssl: allow remote url ssl certificate verification (if True) or disable it (if False)
+            :type verify_ssl: bool.
             
             :returns: str. -- The original url that was shortened with .gd service
             
@@ -178,31 +201,38 @@ class GDBaseShortener(object):
         """
         if short_url is None or not isinstance(short_url, basestring) or len(short_url.strip()) == 0:
             raise GDMalformedURLError('The shortened URL must be a non empty string')
-        # Build data for porst
+        # Build data for post
         data = {
             'format': 'json',
             'shorturl': short_url
         }
         headers = {'User-Agent': self._user_agent}
-        f_desc = requests.get("{0}/forward.php".format(self.shortener_url), params=data, headers=headers)
-        response = json.loads(f_desc.text)
-        if 'url' in response:
-            # Success!
-            return HTMLParser.HTMLParser().unescape(urllib.unquote(response['url']))
-        else:
-            # Error
-            error_code = int(response['errorcode'])
-            error_description = str(response['errormessage'])
-            if error_code == 1:
-                raise GDMalformedURLError(error_description)
-            if error_code == 2:
-                raise GDShortURLError(error_description)
-            if error_code == 3:
-                raise GDRateLimitError(error_description)
-            if error_code == 4:
-                raise GDGenericError(error_description)
 
-    def shorten(self, url, custom_url=None, log_stat=False):
+        try:
+            f_desc = requests.get("{0}/forward.php".format(self.shortener_url), params=data, headers=headers,
+                                  verify=verify_ssl)
+            response = json.loads(f_desc.text)
+            if 'url' in response:
+                # Success!
+                return HTMLParser.HTMLParser().unescape(urllib.unquote(response['url']))
+            else:
+                # Error
+                error_code = int(response['errorcode'])
+                error_description = str(response['errormessage'])
+                if error_code == 1:
+                    raise GDMalformedURLError(error_description)
+                if error_code == 2:
+                    raise GDShortURLError(error_description)
+                if error_code == 3:
+                    raise GDRateLimitError(error_description)
+                if error_code == 4:
+                    raise GDGenericError(error_description)
+        except requests.exceptions.SSLError as ex:
+            raise GDSSLError(str(ex))
+        except Exception as ex:
+            raise GDGenericError(str(ex))
+
+    def shorten(self, url, custom_url=None, log_stat=False, verify_ssl=True):
         """
             Shorten an URL using `is.gd - v.gd url shortener service <http://is.gd/developers.php>`_.
             
@@ -221,6 +251,9 @@ class GDBaseShortener(object):
                 
                 More information on `.gd FAQ <http://is.gd/faq.php#stats>`_ and `.gd rate limit <http://is.gd/usagelimits.php>`_.
             :type log_stat: bool.
+            :param verify_ssl: allow remote url ssl certificate verification (if True) or disable it (if False)
+            :type verify_ssl: bool.
+
             :returns:  (str,str) -- Shortened URL obtained by .gd service and Stat URL if requested (otherwhise is ``None``).
             :raises: **IOError** when timeout with .gd service occurs
                 **ValueError** if .gd response is malformed
@@ -240,24 +273,31 @@ class GDBaseShortener(object):
         if custom_url is not None and isinstance(custom_url, basestring) and len(custom_url.strip()) > 0:
             data['shorturl'] = custom_url
         headers = {'User-Agent': self._user_agent}
-        f_desc = requests.get("{0}/create.php".format(self.shortener_url), params=data, headers=headers)
-        response = json.loads(f_desc.text)
-        if 'shorturl' in response:
-            # Success!
-            return (str(response['shorturl']),
-                    None if not log_stat else '{0}/stats.php?url={1}'.format(self.shortener_url, str(response['shorturl'])[str(response['shorturl']).rindex('/') + 1:]))
-        else:
-            # Error
-            error_code = int(response['errorcode'])
-            error_description = str(response['errormessage'])
-            if error_code == 1:
-                raise GDMalformedURLError(error_description)
-            if error_code == 2:
-                raise GDShortURLError(error_description)
-            if error_code == 3:
-                raise GDRateLimitError(error_description)
-            if error_code == 4:
-                raise GDGenericError(error_description)
+
+        try:
+            f_desc = requests.get("{0}/create.php".format(self.shortener_url), params=data, headers=headers,
+                                  verify=verify_ssl)
+            response = json.loads(f_desc.text)
+            if 'shorturl' in response:
+                # Success!
+                return (str(response['shorturl']),
+                        None if not log_stat else '{0}/stats.php?url={1}'.format(self.shortener_url, str(response['shorturl'])[str(response['shorturl']).rindex('/') + 1:]))
+            else:
+                # Error
+                error_code = int(response['errorcode'])
+                error_description = str(response['errormessage'])
+                if error_code == 1:
+                    raise GDMalformedURLError(error_description)
+                if error_code == 2:
+                    raise GDShortURLError(error_description)
+                if error_code == 3:
+                    raise GDRateLimitError(error_description)
+                if error_code == 4:
+                    raise GDGenericError(error_description)
+        except requests.exceptions.SSLError as ex:
+            raise GDSSLError(str(ex))
+        except Exception as ex:
+            raise GDGenericError(str(ex))
 
     def __init__(self, shortener_url=_IS_GD_SHORTENER_URL_, timeout=60,
                  user_agent='Mozilla/5.0 (compatible; GD Shortener Python Module - https://github.com/torre76/gd_shortener/)'):

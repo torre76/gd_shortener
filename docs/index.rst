@@ -43,7 +43,13 @@ If you want a custom URL use:
 .. code-block:: python
 	
 	print s.shorten(url = 'http://www.google.com', custom_url = 'Pippus')
-	
+
+If you want to ignore SSL certificate (for older version of OpenSSL):
+
+.. code-block:: python
+
+	print s.shorten(url = 'https://expired.badssl.com', verify_ssl = False)
+
 If you have an already shortened URL and want a reverse lookup:
 
 .. code-block:: python
