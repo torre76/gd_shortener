@@ -5,6 +5,7 @@ from gdshortener import GDMalformedURLError
 from gdshortener import GDShortURLError
 from gdshortener import GDRateLimitError
 from gdshortener import GDGenericError
+from gdshortener import GDSSLError
 from gdshortener import GDBaseShortener
 from gdshortener import ISGDShortener
 from gdshortener import VGDShortener
