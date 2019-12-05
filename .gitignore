@@ -11,3 +11,4 @@
 /gdshortener.egg-info
 /.settings
 .vscode
+.noseids
