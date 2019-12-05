@@ -75,8 +75,8 @@ jobs:
       - run:
           name: install dependencies
           command: |
-            virtualenv --user venv
-            . venv/bin/activate
+            virtualenv .venv
+            source .venv/bin/activate
             pip install -r requirements.txt
 
       - save_cache:
