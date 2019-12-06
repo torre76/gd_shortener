@@ -4,8 +4,16 @@
     :synopsis: Module that enables the use of `is.gd - v.gd url shortener <http://is.gd/developers.php>`_.
 """
 
-import HTMLParser
-import urllib
+try:
+    import HTMLParser
+except:
+    import html.parser as HTMLParser
+
+try:
+    from urllib import unquote
+except:
+    from urllib.parse import unquote
+    
 import requests
 import json
 
@@ -199,7 +207,7 @@ class GDBaseShortener(object):
                 :class:`gdshortener.GDRateLimitError` if the request rate is exceeded for .gd service
                 :class:`gdshortener.GDGenericError` in case of generic error from .gd service (mainteinance)
         """
-        if short_url is None or not isinstance(short_url, basestring) or len(short_url.strip()) == 0:
+        if short_url is None or not isinstance(short_url, str) or len(short_url.strip()) == 0:
             raise GDMalformedURLError('The shortened URL must be a non empty string')
         # Build data for post
         data = {
@@ -214,7 +222,7 @@ class GDBaseShortener(object):
             response = json.loads(f_desc.text)
             if 'url' in response:
                 # Success!
-                return HTMLParser.HTMLParser().unescape(urllib.unquote(response['url']))
+                return HTMLParser.HTMLParser().unescape(unquote(response['url']))
             else:
                 # Error
                 error_code = int(response['errorcode'])
@@ -262,7 +270,7 @@ class GDBaseShortener(object):
                 :class:`gdshortener.GDRateLimitError` if the request rate is exceeded for .gd service
                 :class:`gdshortener.GDGenericError` in case of generic error from .gd service (mainteinance)
         """
-        if url is None or not isinstance(url, basestring) or len(url.strip()) == 0:
+        if url is None or not isinstance(url, str) or len(url.strip()) == 0:
             raise GDMalformedURLError('The URL that had to be shorten must be a non empty string')
         # Build data to post
         data = {
@@ -270,7 +278,7 @@ class GDBaseShortener(object):
             'url': url,
             'logstats': 1 if log_stat else 0
         }
-        if custom_url is not None and isinstance(custom_url, basestring) and len(custom_url.strip()) > 0:
+        if custom_url is not None and isinstance(custom_url, str) and len(custom_url.strip()) > 0:
             data['shorturl'] = custom_url
         headers = {'User-Agent': self._user_agent}
 
