@@ -3,6 +3,9 @@ GD Shortener
 
 Python Module for `is.gd - v.gd <http://is.gd/apishorteningreference.php>`_ URL Shortener.
 
+.. image:: https://circleci.com/gh/torre76/gd_shortener.svg?style=svg
+    :target: https://circleci.com/gh/torre76/gd_shortener
+
 What is this?
 -------------
 
