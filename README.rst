@@ -9,7 +9,7 @@ Python Module for `is.gd - v.gd <http://is.gd/apishorteningreference.php>`_ URL 
 What is this?
 -------------
 
-*GD Shortener* allow Python software to access `is.gd - v.gd <http://is.gd/apishorteningreference.php>`_ URL shortener service.
+*GD Shortener* allows Python software to access `is.gd - v.gd <http://is.gd/apishorteningreference.php>`_ URL shortener service.
 
 Using this module you could shorten an URL to a small one like *Twitter* does for its link.
 
